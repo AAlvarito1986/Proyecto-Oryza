@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Oryza Digital - Propuesta Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Verde Azulado y Naranja Energético -->
+    <!-- Application Structure Plan: Se diseñó una estructura de panel de control no lineal con navegación superior fija para permitir a los usuarios explorar libremente las secciones clave: Visión, Propuesta de Valor, Modelo de Negocio y Oportunidad. La sección "Propuesta de Valor" utiliza pestañas interactivas para segmentar claramente la oferta entre "Familias" y "Profesionales", mejorando la claridad para cada público objetivo. Esta arquitectura orientada a tareas es más efectiva que una presentación lineal para que los stakeholders puedan analizar y sintetizar la información según su interés, facilitando la comprensión del proyecto en su totalidad. -->
+    <!-- Visualization & Content Choices: 1. Propuesta de Valor (Servicios): Report Info -> Lista de servicios y productos. Goal -> Organizar y clarificar la oferta. Viz/Method -> Pestañas interactivas (HTML/JS) y tarjetas de contenido (HTML/Tailwind). Interaction -> Clic en pestañas para filtrar contenido por audiencia. Justification -> Separa eficientemente la oferta para dos públicos distintos, mejorando la legibilidad. 2. Modelo Comercial (Precios): Report Info -> Precios estimados de productos. Goal -> Comparar el potencial de ingresos. Viz/Method -> Gráfico de barras (Chart.js/Canvas). Interaction -> Tooltips al pasar el mouse. Justification -> Visualiza rápidamente las diferencias de valor entre las distintas fuentes de ingreso. 3. Estructura E-commerce: Report Info -> 3 pilares de la web. Goal -> Organizar y simplificar el concepto. Viz/Method -> Diagrama visual con cajas (HTML/Flexbox). Justification -> Es más memorable y claro que una lista de texto. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF5;
+            color: #3D405B;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #ff9f4d;
+            border-bottom-color: #ff9f4d;
+        }
+        .tab-btn {
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background-color: #ff9f4d;
+            color: #FFFFFF;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-[#42bea8]">
+                    Proyecto <span class="text-[#ff9f4d]">Oryza Digital</span>
+                </h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#vision" class="nav-link pb-1">Visión General</a>
+                    <a href="#propuesta" class="nav-link pb-1">Propuesta de Valor</a>
+                    <a href="#modelo" class="nav-link pb-1">Modelo de Negocio</a>
+                    <a href="#oportunidad" class="nav-link pb-1">Oportunidad</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-[#3D405B] focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#vision" class="block py-2 px-4 text-sm nav-link">Visión General</a>
+                <a href="#propuesta" class="block py-2 px-4 text-sm nav-link">Propuesta de Valor</a>
+                <a href="#modelo" class="block py-2 px-4 text-sm nav-link">Modelo de Negocio</a>
+                <a href="#oportunidad" class="block py-2 px-4 text-sm nav-link">Oportunidad</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 md:py-16">
+
+        <section id="vision" class="text-center min-h-[60vh] flex flex-col justify-center items-center">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-4">Transformando la Rehabilitación a través de la Innovación Digital</h2>
+            <p class="max-w-3xl text-base md:text-lg text-gray-600 mb-8">
+                El proyecto Oryza Digital busca ampliar el alcance de nuestros centros, creando un ecosistema de apoyo online para ofrecer acompañamiento continuo a familias y profesionales, rompiendo las barreras geográficas.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl w-full">
+                <div class="bg-white/60 p-4 rounded-lg shadow-sm text-center">
+                    <h3 class="text-xl md:text-2xl font-bold text-[#42bea8]">Teleconsulta</h3>
+                    <p class="text-sm text-gray-500">Servicios directos</p>
+                </div>
+                <div class="bg-white/60 p-4 rounded-lg shadow-sm text-center">
+                    <h3 class="text-xl md:text-2xl font-bold text-[#42bea8]">Productos</h3>
+                    <p class="text-sm text-gray-500">Digitales y físicos</p>
+                </div>
+                <div class="bg-white/60 p-4 rounded-lg shadow-sm text-center">
+                    <h3 class="text-xl md:text-2xl font-bold text-[#42bea8]">Talleres</h3>
+                    <p class="text-sm text-gray-500">Para familias</p>
+                </div>
+                <div class="bg-white/60 p-4 rounded-lg shadow-sm text-center">
+                    <h3 class="text-xl md:text-2xl font-bold text-[#42bea8]">Contenido</h3>
+                    <p class="text-sm text-gray-500">Acompañamiento</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="propuesta" class="py-16 md:py-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Propuesta de Valor</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">Una oferta de servicios y productos diseñada para dos públicos clave. Haz clic en las pestañas para explorar.</p>
+            </div>
+
+            <div class="flex justify-center mb-8">
+                <div class="bg-gray-200 rounded-full p-1 flex space-x-1">
+                    <button id="tab-familias" class="tab-btn active px-4 py-2 text-sm sm:px-6 sm:py-2 sm:text-base rounded-full font-semibold">Para Familias</button>
+                    <button id="tab-profesionales" class="tab-btn px-4 py-2 text-sm sm:px-6 sm:py-2 sm:text-base rounded-full font-semibold">Para Profesionales</button>
+                </div>
+            </div>
+
+            <div id="content-familias" class="tab-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200/50">
+                        <h3 class="text-xl font-bold text-[#42bea8] mb-2">Talleres Online para Padres</h3>
+                        <p class="text-gray-600 mb-4">Capacitaciones prácticas para acompañar la terapia en casa. Incluyen grabación y material PDF.</p>
+                        <ul class="text-sm space-y-2 mb-4 list-disc list-inside">
+                            <li>"Acompañamiento fonoaudiológico"</li>
+                            <li>"Guía de estimulación sensorial"</li>
+                            <li>"Prevención de trastornos posturales"</li>
+                        </ul>
+                        <div class="text-right font-semibold text-lg text-[#3D405B]">$3.000 - $7.000 ARS</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200/50">
+                        <h3 class="text-xl font-bold text-[#42bea8] mb-2">Kits de Apoyo Digital</h3>
+                        <p class="text-gray-600 mb-4">Packs de ejercicios en video y PDF imprimibles para reforzar la práctica diaria de forma accesible.</p>
+                        <ul class="text-sm space-y-2 mb-4 list-disc list-inside">
+                             <li>"Rutina de estimulación orofacial"</li>
+                             <li>"Juegos de motricidad fina para casa"</li>
+                             <li>"Circuito de ejercicios para adultos"</li>
+                        </ul>
+                        <div class="text-right font-semibold text-lg text-[#3D405B]">$1.500 - $3.000 ARS</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200/50">
+                        <h3 class="text-xl font-bold text-[#42bea8] mb-2">Kits Físicos Complementarios</h3>
+                        <p class="text-gray-600 mb-4">Elementos seleccionados por nuestros terapeutas para potenciar el trabajo en casa. Ideal para Oryza Kids.</p>
+                         <ul class="text-sm space-y-2 mb-4 list-disc list-inside">
+                            <li>Mandalas sensoriales</li>
+                            <li>Juegos motrices y tarjetas visuales</li>
+                            <li>Utensilios adaptados</li>
+                        </ul>
+                        <div class="text-right font-semibold text-lg text-[#3D405B]">Precio variable</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-profesionales" class="tab-content hidden">
+                <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200/50">
+                        <h3 class="text-xl font-bold text-[#42bea8] mb-2">Talleres de Formación Profesional</h3>
+                        <p class="text-gray-600 mb-4">Cursos de especialización para profesionales de otras regiones que buscan actualizar sus conocimientos.</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside">
+                            <li>"Introducción al enfoque interdisciplinario"</li>
+                            <li>"Dinámicas para grupos terapéuticos infantiles"</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200/50">
+                        <h3 class="text-xl font-bold text-[#42bea8] mb-2">Suscripción a Recursos</h3>
+                        <p class="text-gray-600 mb-4">Acceso a una biblioteca de recursos exclusivos: videos, plantillas y manuales de intervención.</p>
+                        <div class="text-center mt-6">
+                            <span class="text-3xl font-bold">$12.000</span>
+                            <span class="text-gray-500">ARS / mes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modelo" class="py-16 md:py-24 bg-white/60 rounded-lg">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Modelo de Negocio y Escalabilidad</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">Una estructura de e-commerce simple y un modelo con alto potencial de crecimiento.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Potencial de Ingresos por Producto</h3>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                     <p class="text-center text-sm text-gray-500 mt-2">Comparativa del valor unitario máximo por tipo de oferta.</p>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Estructura del E-commerce</h3>
+                    <div class="flex flex-col md:flex-row justify-around gap-4">
+                        <div class="flex-1 text-center bg-white p-6 rounded-lg shadow-md">
+                            <div class="text-4xl mb-2">🗓️</div>
+                            <h4 class="font-bold text-lg">Reservá tu Sesión</h4>
+                            <p class="text-sm text-gray-600">Terapias 100% online</p>
+                        </div>
+                        <div class="flex-1 text-center bg-white p-6 rounded-lg shadow-md">
+                            <div class="text-4xl mb-2">🛍️</div>
+                            <h4 class="font-bold text-lg">Tienda Terapéutica</h4>
+                            <p class="text-sm text-gray-600">Kits digitales y físicos</p>
+                        </div>
+                        <div class="flex-1 text-center bg-white p-6 rounded-lg shadow-md">
+                            <div class="text-4xl mb-2">🎓</div>
+                            <h4 class="font-bold text-lg">Talleres y Cursos</h4>
+                            <p class="text-sm text-gray-600">Inscripción directa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="oportunidad" class="py-16 md:py-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">¿Por qué ahora? La Oportunidad Estratégica</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">Factores clave que hacen de este el momento perfecto para la expansión digital.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-lg mb-2 text-[#42bea8]">Necesidad del Mercado</h3>
+                    <p class="text-gray-600">Las familias buscan activamente recursos online para apoyar las terapias en casa.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-lg mb-2 text-[#42bea8]">Crecimiento Exponencial</h3>
+                    <p class="text-gray-600">Rompemos las barreras geográficas para llegar a pacientes y profesionales de todo el país.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-lg mb-2 text-[#42bea8]">Diversificación de Ingresos</h3>
+                    <p class="text-gray-600">Nuevas fuentes de ingresos con alta escalabilidad y márgenes atractivos.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <h3 class="font-bold text-lg mb-2 text-[#42bea8]">Fortalecimiento de Marca</h3>
+                    <p class="text-gray-600">Nos posicionamos como un centro innovador y adaptado a las nuevas tecnologías.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 border-t">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-600">
+            <h3 class="text-xl font-bold text-[#3D405B] mb-4">Próximos Pasos</h3>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-left max-w-4xl mx-auto">
+                <div class="bg-white p-4 rounded-lg flex-1 w-full">1. Definir equipo responsable del proyecto.</div>
+                <div class="bg-white p-4 rounded-lg flex-1 w-full">2. Establecer presupuesto para desarrollo web.</div>
+                <div class="bg-white p-4 rounded-lg flex-1 w-full">3. Priorizar y desarrollar productos de lanzamiento.</div>
+            </div>
+            <p class="mt-8 text-sm">&copy; 2025 Proyecto Oryza Digital. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const tabs = {
+                familias: {
+                    btn: document.getElementById('tab-familias'),
+                    content: document.getElementById('content-familias'),
+                },
+                profesionales: {
+                    btn: document.getElementById('tab-profesionales'),
+                    content: document.getElementById('content-profesionales'),
+                }
+            };
+
+            function switchTab(activeTab) {
+                Object.keys(tabs).forEach(key => {
+                    const is_active = key === activeTab;
+                    tabs[key].btn.classList.toggle('active', is_active);
+                    tabs[key].content.classList.toggle('hidden', !is_active);
+                });
+            }
+
+            tabs.familias.btn.addEventListener('click', () => switchTab('familias'));
+            tabs.profesionales.btn.addEventListener('click', () => switchTab('profesionales'));
+
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const revenueChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Kits Digitales', 'Talleres Familiares', 'Suscripción Profesional'],
+                    datasets: [{
+                        label: 'Valor Máximo Estimado (ARS)',
+                        data: [3000, 7000, 12000],
+                        backgroundColor: [
+                            'rgba(66, 190, 168, 0.4)',
+                            'rgba(66, 190, 168, 0.7)',
+                            'rgba(255, 159, 77, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(66, 190, 168, 1)',
+                            'rgba(66, 190, 168, 1)',
+                            'rgba(255, 159, 77, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return '$' + value.toLocaleString('es-AR');
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
