@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display-swap" rel="stylesheet">
     <!-- Chosen Palette: Verde Azulado y Naranja Energético -->
     <!-- Application Structure Plan: Se diseñó una estructura de panel de control no lineal con navegación superior fija para permitir a los usuarios explorar libremente las secciones clave: Visión, Propuesta de Valor, Modelo de Negocio y Oportunidad. La sección "Propuesta de Valor" utiliza pestañas interactivas para segmentar claramente la oferta entre "Familias" y "Profesionales", mejorando la claridad para cada público objetivo. Esta arquitectura orientada a tareas es más efectiva que una presentación lineal para que los stakeholders puedan analizar y sintetizar la información según su interés, facilitando la comprensión del proyecto en su totalidad. -->
     <!-- Visualization & Content Choices: 1. Propuesta de Valor (Servicios): Report Info -> Lista de servicios y productos. Goal -> Organizar y clarificar la oferta. Viz/Method -> Pestañas interactivas (HTML/JS) y tarjetas de contenido (HTML/Tailwind). Interaction -> Clic en pestañas para filtrar contenido por audiencia. Justification -> Separa eficientemente la oferta para dos públicos distintos, mejorando la legibilidad. 2. Modelo Comercial (Precios): Report Info -> Precios estimados de productos. Goal -> Comparar el potencial de ingresos. Viz/Method -> Gráfico de barras (Chart.js/Canvas). Interaction -> Tooltips al pasar el mouse. Justification -> Visualiza rápidamente las diferencias de valor entre las distintas fuentes de ingreso. 3. Estructura E-commerce: Report Info -> 3 pilares de la web. Goal -> Organizar y simplificar el concepto. Viz/Method -> Diagrama visual con cajas (HTML/Flexbox). Justification -> Es más memorable y claro que una lista de texto. -->
@@ -27,12 +27,19 @@
             color: #ff9f4d;
             border-bottom-color: #ff9f4d;
         }
-        .tab-btn {
+        .tab-btn, .week-btn, .prof-btn {
             transition: all 0.3s;
         }
-        .tab-btn.active {
+        .tab-btn.active, .week-btn.active, .prof-btn.active {
             background-color: #ff9f4d;
             color: #FFFFFF;
+        }
+        .phase-btn {
+            transition: all 0.3s;
+        }
+        .phase-btn.active {
+            color: #ff9f4d;
+            border-bottom-color: #ff9f4d;
         }
         .chart-container {
             position: relative;
@@ -42,6 +49,12 @@
             margin-right: auto;
             height: 300px;
             max-height: 400px;
+        }
+        .podcast-month-toggle svg {
+            transition: transform 0.3s;
+        }
+        .podcast-month-toggle.open svg {
+            transform: rotate(180deg);
         }
         @media (min-width: 768px) {
             .chart-container {
@@ -62,6 +75,7 @@
                     <a href="#vision" class="nav-link pb-1">Visión General</a>
                     <a href="#propuesta" class="nav-link pb-1">Propuesta de Valor</a>
                     <a href="#modelo" class="nav-link pb-1">Modelo de Negocio</a>
+                    <a href="#estrategia" class="nav-link pb-1">Estrategia</a>
                     <a href="#oportunidad" class="nav-link pb-1">Oportunidad</a>
                 </div>
                 <div class="md:hidden">
@@ -74,6 +88,7 @@
                 <a href="#vision" class="block py-2 px-4 text-sm nav-link">Visión General</a>
                 <a href="#propuesta" class="block py-2 px-4 text-sm nav-link">Propuesta de Valor</a>
                 <a href="#modelo" class="block py-2 px-4 text-sm nav-link">Modelo de Negocio</a>
+                 <a href="#estrategia" class="block py-2 px-4 text-sm nav-link">Estrategia</a>
                 <a href="#oportunidad" class="block py-2 px-4 text-sm nav-link">Oportunidad</a>
             </div>
         </nav>
@@ -86,6 +101,9 @@
             <p class="max-w-3xl text-base md:text-lg text-gray-600 mb-8">
                 El proyecto Oryza Digital busca ampliar el alcance de nuestros centros, creando un ecosistema de apoyo online para ofrecer acompañamiento continuo a familias y profesionales, rompiendo las barreras geográficas.
             </p>
+            <a href="#estrategia" class="bg-[#ff9f4d] text-white font-bold py-3 px-8 rounded-full hover:bg-[#e68a3e] transition-colors duration-300 mb-12 shadow-lg">
+                Ver Planificación y Ejecución
+            </a>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl w-full">
                 <div class="bg-white/60 p-4 rounded-lg shadow-sm text-center">
                     <h3 class="text-xl md:text-2xl font-bold text-[#42bea8]">Teleconsulta</h3>
@@ -208,6 +226,89 @@
                             <p class="text-sm text-gray-600">Inscripción directa</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estrategia" class="py-16 md:py-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold">Estrategia de Contenido y Lanzamiento</h2>
+                <p class="mt-2 text-lg text-gray-600 max-w-2xl mx-auto">Un plan de 3 fases para construir autoridad, conectar con la audiencia y lanzar la plataforma digital.</p>
+            </div>
+        
+            <div class="flex justify-center mb-8 border-b">
+                <button id="btn-fase1" class="phase-btn active px-4 sm:px-6 py-3 font-semibold text-sm sm:text-base">Fase 1: Podcast Semanal</button>
+                <button id="btn-fase2" class="phase-btn px-4 sm:px-6 py-3 font-semibold text-sm sm:text-base">Fase 2: Contenido en Redes</button>
+            </div>
+        
+            <div id="content-fase1" class="phase-content">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <h3 class="text-2xl font-bold text-[#42bea8] mb-2">El Corazón del Contenido – El Podcast "Terapia 360"</h3>
+                    <p class="text-gray-600">Un episodio semanal de 30-45 minutos con Maxi, Mica y Virgi. La conversación interdisciplinaria será el pilar para generar contenido derivado y posicionar a Oryza como un centro integral.</p>
+                </div>
+                <div class="max-w-4xl mx-auto space-y-4">
+                    <div>
+                        <button class="podcast-month-toggle w-full text-left font-bold text-lg p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                            <span>Mes 1: Fundamentos del Desarrollo y Bienestar</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="podcast-month-content hidden p-4 bg-gray-50 rounded-b-lg space-y-2 text-gray-700">
+                            <p><strong>Semana 1:</strong> "El ABC del Movimiento: ¿Por qué son cruciales el primer año de vida?"</p>
+                            <p><strong>Semana 2:</strong> "Mi casa, mi gimnasio sensorial: Cómo adaptar el hogar para estimular."</p>
+                            <p><strong>Semana 3:</strong> "Postura y Pantallas: El nuevo desafío para niños y adultos."</p>
+                            <p><strong>Semana 4:</strong> "Dolor Crónico: Cuando no solo duele el cuerpo. Un abordaje integral."</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="podcast-month-toggle w-full text-left font-bold text-lg p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                            <span>Mes 2: Herramientas Prácticas para Familias y Profesionales</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="podcast-month-content hidden p-4 bg-gray-50 rounded-b-lg space-y-2 text-gray-700">
+                             <p><strong>Semana 5:</strong> "El Juego como Terapia: Estrategias prácticas para el día a día."</p>
+                             <p><strong>Semana 6:</strong> "Más allá de la terapia: El rol clave de la familia en la rehabilitación."</p>
+                             <p><strong>Semana 7:</strong> "¿Cuándo consultar? Señales de alerta en el desarrollo motor y sensorial."</p>
+                             <p><strong>Semana 8:</strong> "De la teoría a la práctica: Desglosando un caso de éxito de forma anónima."</p>
+                        </div>
+                    </div>
+                     <div>
+                        <button class="podcast-month-toggle w-full text-left font-bold text-lg p-4 bg-white rounded-lg shadow flex justify-between items-center">
+                            <span>Mes 3: Avanzando hacia la Autonomía y el Futuro Digital</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="podcast-month-content hidden p-4 bg-gray-50 rounded-b-lg space-y-2 text-gray-700">
+                            <p><strong>Semana 9:</strong> "Tecnología y Rehabilitación: Aliados y enemigos."</p>
+                            <p><strong>Semana 10:</strong> "Preparando la transición: De la terapia en consultorio al apoyo en casa."</p>
+                            <p><strong>Semana 11:</strong> "Mitos y Verdades en rehabilitación: Rompiendo con viejas creencias."</p>
+                            <p><strong>Semana 12:</strong> "El Futuro es Híbrido: Cómo la telemedicina potenciará tu bienestar."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div id="content-fase2" class="phase-content hidden">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                     <h3 class="text-2xl font-bold text-[#42bea8] mb-2">Calendario de Contenido para Redes Sociales</h3>
+                     <p class="text-gray-600">Frecuencia: 5 Reels + 2 Carruseles por semana para cada profesional, extrayendo y adaptando contenido del podcast.</p>
+                </div>
+
+                <div class="flex justify-center mb-4">
+                    <div class="bg-gray-200 rounded-full p-1 flex flex-wrap justify-center gap-1">
+                        <button class="week-btn active text-sm sm:text-base px-3 py-2 sm:px-4 rounded-full font-semibold" data-week="1">Semana 1</button>
+                        <button class="week-btn text-sm sm:text-base px-3 py-2 sm:px-4 rounded-full font-semibold" data-week="2">Semana 2</button>
+                        <button class="week-btn text-sm sm:text-base px-3 py-2 sm:px-4 rounded-full font-semibold" data-week="3">Semana 3</button>
+                        <button class="week-btn text-sm sm:text-base px-3 py-2 sm:px-4 rounded-full font-semibold" data-week="4">Semana 4</button>
+                    </div>
+                </div>
+                 <div class="flex justify-center mb-8">
+                    <div class="bg-gray-100 rounded-full p-1 flex flex-wrap justify-center gap-1">
+                        <button class="prof-btn active text-sm sm:text-base px-3 py-1 sm:px-4 rounded-full" data-prof="micaela">Micaela Mignola (T.O.)</button>
+                        <button class="prof-btn text-sm sm:text-base px-3 py-1 sm:px-4 rounded-full" data-prof="virginia">Virginia Tocino (Kine.)</button>
+                        <button class="prof-btn text-sm sm:text-base px-3 py-1 sm:px-4 rounded-full" data-prof="maxi">Maxi Coronel (Fisiatra)</button>
+                    </div>
+                </div>
+        
+                <div id="calendar-display" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                 </div>
             </div>
         </section>
@@ -372,7 +473,101 @@
                     mobileMenu.classList.add('hidden');
                 });
             });
+
+            const phaseBtn1 = document.getElementById('btn-fase1');
+            const phaseBtn2 = document.getElementById('btn-fase2');
+            const contentFase1 = document.getElementById('content-fase1');
+            const contentFase2 = document.getElementById('content-fase2');
+
+            phaseBtn1.addEventListener('click', () => {
+                phaseBtn1.classList.add('active');
+                phaseBtn2.classList.remove('active');
+                contentFase1.classList.remove('hidden');
+                contentFase2.classList.add('hidden');
+            });
+
+            phaseBtn2.addEventListener('click', () => {
+                phaseBtn2.classList.add('active');
+                phaseBtn1.classList.remove('active');
+                contentFase2.classList.remove('hidden');
+                contentFase1.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.podcast-month-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    button.classList.toggle('open');
+                    content.classList.toggle('hidden');
+                });
+            });
+            
+            const calendarData = {
+                1: {
+                    micaela: { Lunes: "3 juegos con pinzas de ropa para mejorar la motricidad fina", Miércoles: "El detrás de escena de una sesión de T.O.", Jueves: "Tip rápido: Cómo ayudar a tu hijo a vestirse solo", Sábado: "Extracto del Podcast: Su mejor intervención", Domingo: "Pregúntale a la TO" },
+                    virginia: { Lunes: "¿Tu hijo camina en puntas de pie? 3 ejercicios que pueden ayudar", Miércoles: "Un día como Kinesióloga", Jueves: "Tip rápido: Pausa activa de 1 minuto para el home office", Sábado: "Extracto del Podcast: Su mejor intervención", Domingo: "Mito o Verdad sobre lesiones deportivas" },
+                    maxi: { Lunes: "El dolor de espalda no siempre es muscular. ¿Lo sabías?", Miércoles: "¿Por qué un Fisiatra? Mi rol en el equipo de salud", Jueves: "Tip rápido: Cómo levantarte de la cama sin dolor", Sábado: "Extracto del Podcast: Su mejor intervención", Domingo: "3 errores comunes que veo en mis pacientes" }
+                },
+                2: {
+                    micaela: { Lunes: "Ergonomía 101: Ajusta así tu silla de oficina", Miércoles: "Analizando un cubierto adaptado: ¿Para qué sirve?", Jueves: "Antes y Después: Cómo abrochar un botón fácilmente", Sábado: "Mi herramienta favorita en el consultorio y por qué", Domingo: "¿Qué son las Actividades de la Vida Diaria (AVD)?" },
+                    virginia: { Lunes: "La importancia del 'Tummy Time' (tiempo boca abajo) para tu bebé", Miércoles: "Corrigiendo el error más común al hacer una sentadilla", Jueves: "Así se ve una evaluación de la marcha (simulación)", Sábado: "¿Esguince de tobillo? Los primeros pasos a seguir", Domingo: "Respondiendo una duda común sobre dolor de rodilla." },
+                    maxi: { Lunes: "¿Qué es la espasticidad y cómo se trata?", Miércoles: "Mostrando (de forma simple) qué es una electromiografía", Jueves: "La diferencia entre rehabilitación y fisioterapia", Sábado: "Mi rol en la recuperación post-ACV", Domingo: "Respondiendo una duda sobre dolor crónico." }
+                },
+                3: {
+                    micaela: { Lunes: "Tutorial: Cómo enseñar a usar las tijeras de forma segura", Miércoles: "Un día en mi vida como Terapista Ocupacional", Jueves: "3 tips para conservar tu energía si tienes fatiga crónica", Sábado: "Extracto del Podcast: Su rol en el equipo", Domingo: "Mito o Verdad: ¿La T.O. es solo para niños?" },
+                    virginia: { Lunes: "¿Cuándo debería empezar a gatear mi bebé? Hitos del desarrollo", Miércoles: "Detrás de cámaras: Preparando una sesión de rehabilitación", Jueves: "Evita el 'cuello de texto': Un estiramiento simple", Sábado: "Extracto del Podcast: Aporte técnico clave", Domingo: "¿Hielo o calor? Cuándo usar cada uno" },
+                    maxi: { Lunes: "El dolor es una señal de tu cerebro, no solo de tu cuerpo", Miércoles: "¿Qué es una infiltración y cuándo se recomienda?", Jueves: "Un día conmigo: interconsultas y trabajo en equipo", Sábado: "Extracto del Podcast: Aporte técnico clave", Domingo: "Mito o Verdad: 'El reposo absoluto es lo mejor para una lesión'" }
+                },
+                4: {
+                    micaela: { Lunes: "Juego de coordinación en casa con una pelota y una pared", Miércoles: "Mostrando cómo evaluamos el agarre del lápiz", Jueves: "Tip rápido para la cocina: Cómo abrir un frasco sin esfuerzo", Sábado: "¿Por qué la rutina es tan importante para los niños?", Domingo: "Respondiendo en video una pregunta de los comentarios." },
+                    virginia: { Lunes: "Juego de equilibrio para niños que puedes hacer en el parque", Miércoles: "Mi ejercicio de CORE favorito para fortalecer la espalda", Jueves: "¿Por qué me 'suenan' las articulaciones?", Sábado: "Así te ayuda la Kinesiología después de una cirugía", Domingo: "Desmintiendo un ejercicio viral de redes." },
+                    maxi: { Lunes: "Hablemos de neurorehabilitación pediátrica: ¿Qué es?", Miércoles: "El camino desde el diagnóstico hasta el plan de tratamiento", Jueves: "La importancia del calzado en el dolor de pies y espalda", Sábado: "¿Por qué te pido estudios por imágenes? Te lo explico", Domingo: "Mi opinión sobre..." }
+                }
+            };
+            
+            const weekBtns = document.querySelectorAll('.week-btn');
+            const profBtns = document.querySelectorAll('.prof-btn');
+            const calendarDisplay = document.getElementById('calendar-display');
+            let currentWeek = 1;
+            let currentProf = 'micaela';
+
+            function renderCalendar() {
+                calendarDisplay.innerHTML = '';
+                const data = calendarData[currentWeek][currentProf];
+                const days = ["Lunes", "Miércoles", "Jueves", "Sábado", "Domingo"];
+                days.forEach(day => {
+                    const card = `
+                        <div class="bg-white p-4 rounded-lg shadow-md h-full flex flex-col">
+                            <p class="font-bold text-gray-800">${day} <span class="text-xs font-normal text-gray-500">(Reel)</span></p>
+                            <p class="text-sm text-gray-600 mt-1 flex-grow">${data[day]}</p>
+                        </div>
+                    `;
+                    calendarDisplay.innerHTML += card;
+                });
+            }
+
+            weekBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    weekBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentWeek = btn.dataset.week;
+                    renderCalendar();
+                });
+            });
+
+            profBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    profBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentProf = btn.dataset.prof;
+                    renderCalendar();
+                });
+            });
+
+            renderCalendar();
+
         });
     </script>
 </body>
 </html>
+
+
